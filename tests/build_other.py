@@ -1,7 +1,8 @@
 import sys
 
-sys.path.append("../multiavatar")
 from multiavatar import multiavatar
+
+sys.path.append("../multiavatar")
 
 html = "<html><head></head><body>"
 

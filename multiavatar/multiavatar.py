@@ -6,6 +6,10 @@
 # license   https://multiavatar.com/license
 # homepage  https://multiavatar.com
 
+import re
+from collections import defaultdict
+from hashlib import sha256
+
 
 def multiavatar(string, sansEnv, ver):
     string = str(string)
@@ -630,8 +634,6 @@ def multiavatar(string, sansEnv, ver):
     head = '<path d="m115.5 51.75a63.75 63.75 0 0 0-10.5 126.63v14.09a115.5 115.5 0 0 0-53.729 19.027 115.5 115.5 0 0 0 128.46 0 115.5 115.5 0 0 0-53.729-19.029v-14.084a63.75 63.75 0 0 0 53.25-62.881 63.75 63.75 0 0 0-63.65-63.75 63.75 63.75 0 0 0-0.09961 0z" style="fill:#000;"/>'
     stro = "stroke-linecap:round;stroke-linejoin:round;stroke-width:"
 
-    from collections import defaultdict
-
     sP = defaultdict(dict)
 
     # Robo
@@ -1010,11 +1012,7 @@ def multiavatar(string, sansEnv, ver):
     if len(string) == 0:
         return hash
 
-    from hashlib import sha256
-
     sha256Hash = sha256(string.encode("utf-8")).hexdigest()
-
-    import re
 
     sha256Numbers = re.sub("\D", "", sha256Hash)
 
