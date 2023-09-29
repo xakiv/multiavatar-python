@@ -1,13 +1,11 @@
-import logging
-from collections import defaultdict
-from hashlib import sha256
-import re
-from jinja2 import Environment, PackageLoader, select_autoescape
-import random
-from collections import defaultdict
-from hashlib import sha256
 import json
+import logging
+import random
+import re
+from hashlib import sha256
 from pathlib import Path
+
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
