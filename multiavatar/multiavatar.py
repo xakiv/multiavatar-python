@@ -12,9 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 class MultiAvatarBuilder:
-    def __init__(self, seed, discard_env=False, sha256_randomizer=True):
+    def __init__(self, seed, discard_env=False, style={}, sha256_randomizer=True):
         self.seed = str(seed)
         self.discard_env = discard_env
+        self.style = style
         self.sha256_randomizer = sha256_randomizer
         super().__init__()
 
@@ -27,13 +28,13 @@ class MultiAvatarBuilder:
 
     def value_randomizer(self):
         if not self.sha256_randomizer:
-            # Get a string of digits from a given seed
+            # Get a random string with 12 digits from a given seed
             random.seed(self.seed)
             number = random.randint(0, 10**12)
             hash_key = str(f"{number:012d}")
         else:
-            # Create hash from a given seed and get the string of the firsts digits
-            numbers = re.sub("\D", "", sha256(self.seed.encode("utf-8")).hexdigest())
+            # Create hash from a given seed and get the string of the 12th firsts digits
+            numbers = re.sub(r"\D", "", sha256(self.seed.encode("utf-8")).hexdigest())
             hash_key = numbers[0:12]
 
         return {
@@ -47,7 +48,7 @@ class MultiAvatarBuilder:
 
     def get_context(self):
         base_path = Path(__file__).parent
-        themes_fp = Path(base_path, "data/themes.json")
+        themes_fp = Path(base_path, "config/style.json")
         if themes_fp.exists():
             themes = json.load(themes_fp.open())
 
@@ -57,6 +58,12 @@ class MultiAvatarBuilder:
             shapes_selector.pop("env", None)
 
         def encode_value(part, value):
+            if self.style:
+                value = self.style.get("value")
+                theme = self.style.get("theme")
+                colors = themes[value].get(theme).get(part, [])
+                return {"value": value, "theme": theme, "colors": colors}
+
             if value > 31:
                 value = value - 32
                 theme = "C"
@@ -84,15 +91,16 @@ class MultiAvatarBuilder:
         return self.avatar_rendering(context)
 
 
-def multiavatar(seed, discard_env=False, sha256_randomizer=True):
+def multiavatar(seed, discard_env=False, style={}, sha256_randomizer=True):
     """
-    Create an SVG avatar from a given seed
+    SVG avatar creator, configured with a given seed.
     seed = A string from which the SVG styles are going to be generated
-    discard_env = Allows removing background
-    sha256_randomizer =
+    discard_env = Generate an avatar without the environment part.
+    style = Generate a specific avatar style from given dict.
+            EX: {'value': 11, 'theme': 'C'}
+    sha256_randomizer = Use legit hash processing
     """
-
-    builder = MultiAvatarBuilder(str(seed), discard_env, sha256_randomizer)
+    builder = MultiAvatarBuilder(str(seed), discard_env, style, sha256_randomizer)
     avatar = builder.get_avatar()
     logger.debug(avatar)
     return avatar
