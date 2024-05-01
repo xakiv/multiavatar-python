@@ -9,8 +9,8 @@ This repository is forked from the following [source](https://github.com/multiav
 You may want to install this package in a python virtual environment: [More info](https://docs.python.org/3/library/venv.html)
 
 ```
-git clone https://github.com/xakiv/multiavatar-python
-cd multiavatar-python/
+git clone https://github.com/xakiv/multiavatar-python src
+cd src/
 pip install -r requirements/base.txt
 ```
 

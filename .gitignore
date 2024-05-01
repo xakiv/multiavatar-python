@@ -16,4 +16,5 @@ ENV/
 env.bak/
 venv.bak/
 
-results/
+results/*.svg
+results/*.html
