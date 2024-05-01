@@ -16,5 +16,7 @@ ENV/
 env.bak/
 venv.bak/
 
-results/*.svg
-results/*.html
+
+/multiavatar/test/results/LegitHash.svg
+/multiavatar/test/results/SimpleHash.svg
+/multiavatar/test/results/Starcrasher.html
